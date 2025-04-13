@@ -1,5 +1,7 @@
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <tgmath.h>
 #include <time.h>
 #include "sudokuGenerator.c"
@@ -94,9 +96,14 @@ void freeBoard(int **board, int boardN)
 
 void allocateBoard(int ***board, int boardN) {
     *board = malloc(sizeof(int *) * boardN);
+    if (*board == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        exit(EXIT_FAILURE);
+    }
     for (int i = 0; i < boardN; i++) {
         (*board)[i] = malloc(sizeof(int) * boardN);
     }
+
 }
 
 int** initializeGame(int **board,int **solution,int boardN, int k, int blockSize) {
@@ -145,6 +152,35 @@ void printStatistics(int secounds, int mistakes)
     printf("------------------------\n");
 }
 
+int convertInput(char* str, int boardN, int* row, int* col, int* num) {
+    for (char* p = str; *p; ++p) {
+        *p = tolower(*p); // all input lowercase
+    }
+
+    if (strcmp(str, "quit") == 0) {
+        return 0; // quit
+    }
+    if (strcmp(str, "hint") == 0) {
+        return 2; // hint
+    }
+
+    char rowChar;
+    if (sscanf(str, "%c%d %d", &rowChar, col, num) == 3) {
+        rowChar = toupper(rowChar);
+        *row = rowChar - 'A'; // 'A' → 0, 'B' → 1 etc.
+
+        // Validate input
+        if (*row < 0 || *row >= boardN || *col < 1 || *col > boardN || *num < 1 || *num > boardN) {
+            return -1;
+        }
+
+        *col -= 1;
+        return 1; // Valid input
+    }
+
+    return -1; // Wrong format
+}
+
 void playSudoku(int *boardN, int *k)
 {
     clear_screen();
@@ -158,69 +194,81 @@ void playSudoku(int *boardN, int *k)
     initializeGame(board,solution,*boardN, *k, blockSize);
 
 
+    char input[10];
     int row, col, num;
     bool gameWon = false;
+    bool quit = false;
+    int hintRow = 0, hintCol = 0;
 
     // statistics
     int mistakes = 0;
     int secounds = 0;
     timerStart(&secounds);
 
-    while (!gameWon) {
-
+    while (!quit && !gameWon) {
         printBoard(board, blockSize, *boardN);
-        printf("\n");
-        printBoard(solution, blockSize, *boardN);
+        printf("Enter row (A-%c) column (1-%d), and number (1-%d):\n", 'A' + *boardN - 1, *boardN, *boardN);
+        printf("Example: A1 5\n");
+        printf("Write \"quit\" to exit\n");
+        printf("Write \"hint\" to get hint\n");
+        printf("Your input: ");
 
-        printf("Enter row (1-%d), column (1-%d), and number (1-%d):\n", *boardN, *boardN, *boardN);
-        printf("Format: row column number (or 0 0 0 to quit)\n");
+        fgets(input, sizeof(input), stdin);
+        input[strcspn(input, "\n")] = '\0';
 
-        if (scanf("%d %d %d", &row, &col, &num) != 3) {
-            clear_and_print("Invalid input! Please try again.");
-            while (getchar() != '\n');
-            continue;
-        }
+        int answer = convertInput(input, *boardN, &row, &col, &num);
 
-        if (row == 0 && col == 0 && num == 0) {
-            clear_and_print("Quitting game...");
-            break;
-        }
+        switch (answer) {
+            case -1: // Invalid input
+                clear_and_print("Invalid input! Please try again.");
+                continue;
 
-        // Validate input
-        if (row < 1 || row > *boardN || col < 1 || col > *boardN || num < 1 || num > *boardN) {
-            clear_screen();
-            printf("Invalid input! Values must be between 1 and %d.\n", *boardN);
-            continue;
-        }
+            case 0: // Quit
+                clear_and_print("Quitting game...");
+                quit = true;
+                break;
 
-        row--;
-        col--;
+            case 2: // Hint
+                do {
+                    hintRow = rand() % *boardN;
+                    hintCol = rand() % *boardN;
+                } while (board[hintRow][hintCol] != 0);
 
-        if (board[row][col] != 0) {
-            clear_and_print("This cell is already filled!");
-            continue;
-        }
+                board[hintRow][hintCol] = solution[hintRow][hintCol];
+                clear_screen();
+                printf("Hint provided in %c%d: %d\n", 'A' + hintRow, hintCol + 1, board[hintRow][hintCol]);
+                break;
 
-        if (checkIfCorrect(row, col, num, solution)) {
-            board[row][col] = num;
-            clear_and_print("Correct!");
+            case 1: // current input
+                if (board[row][col] != 0) {
+                    clear_and_print("This cell is already filled!");
+                    continue;
+                }
 
-            if (isBoardComplete(board, *boardN)) {
-                gameWon = true;
-                secounds = timerStop(&secounds);
-                clear_and_print("\nCongratulations! You've solved the Sudoku!");
-                printBoard(board, blockSize, *boardN);
-
-                printStatistics(secounds, mistakes);
-
-                printf("\nInput eny key to exit...");
-                scanf("%*s"); // Wait for user input before exiting
-            }
-        } else {
-            clear_and_print("Incorrect! Try again.");
-            mistakes++;
-        }
+                if (checkIfCorrect(row, col, num, solution)) {
+                    board[row][col] = num;
+                    clear_and_print("Correct!");
+                } else {
+                    clear_and_print("Incorrect! Try again.");
+                    mistakes++;
+                }
+                break;
     }
+
+
+    if (isBoardComplete(board, *boardN)) {
+        gameWon = true;
+        secounds = timerStop(&secounds);
+
+        clear_and_print("\nCongratulations! You've solved the Sudoku!");
+        printBoard(board, blockSize, *boardN);
+
+        printStatistics(secounds, mistakes);
+        printf("\nPress any key to exit...");
+        scanf("%*s"); // Wait for user input
+    }
+}
+
 
     freeBoard(board,*boardN);
     freeBoard(solution,*boardN);
