@@ -1,8 +1,9 @@
 #include "play.c"
 
+
 int boardN = 9;
 int level = 1;
-int k = 17; //TODO change to 17
+int k = 17;
 
 int main() {
     int choice;
@@ -24,7 +25,7 @@ int main() {
 
         switch (choice) {
         case 1:
-            playSudoku(&boardN, &k);
+            playSudoku(&boardN, &k, &level);
             break;
         case 2:
             chooseBoardN(&boardN, &k, &level);

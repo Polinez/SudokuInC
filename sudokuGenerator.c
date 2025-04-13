@@ -1,5 +1,5 @@
 #include <stdbool.h>
-
+#include <stdlib.h>
 
 bool unUsedInBox(int** grid, int rowStart, int colStart, int num, int blockSize) {
     for (int i = 0; i < blockSize; i++)
