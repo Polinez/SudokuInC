@@ -69,15 +69,15 @@ bool fillRemaining(int** grid, int i, int j, int blockSize, int boardN) {
 
 
 
-void removeKDigits(int** grid, int k, int boardN) {
-    while (k > 0) {
+void removeNDigits(int** grid, int N, int boardN) {
+    while (N > 0) {
         int cellId = rand() % (boardN * boardN);
         int i = cellId / boardN;
         int j = cellId % boardN;
 
         if (grid[i][j] != 0) {
             grid[i][j] = 0;
-            k--;
+            N--;
         }
     }
 }
@@ -100,5 +100,5 @@ void sudokuGenerator(int **grid, int **solution, int k, int blockSize, int board
     //copy the filled grid to solution
     copyGrid(grid, solution, boardN);
 
-    removeKDigits(grid, boardN*boardN - k, boardN);
+    removeNDigits(grid, boardN*boardN - k, boardN);
 }

@@ -66,6 +66,7 @@ void playSudoku(int *boardN, int *k,int *level)
     // statistics
     int mistakes = 0;
     int secounds = 0;
+    int hints= 0;
     timerStart(&secounds);
 
     while (!quit && !gameWon) {
@@ -97,16 +98,16 @@ void playSudoku(int *boardN, int *k,int *level)
                 } while (board[hintRow][hintCol] != 0);
 
                 board[hintRow][hintCol] = solution[hintRow][hintCol];
+                hints++;
                 clear_screen();
                 printf("Hint provided in %c%d: %d\n", 'A' + hintRow, hintCol + 1, board[hintRow][hintCol]);
                 break;
             case 3://save
-                saveGame(board, solution, *boardN, *k, *level, mistakes, secounds);
+                saveGame(board, solution, *boardN, blockSize, *k, *level, mistakes, secounds);
                 quit = true;
                 break;
             case 4:
-                loadGame(&board, &solution, boardN, k,level, &mistakes, &secounds);
-                blockSize = (int)sqrt(*boardN);
+                loadGame(&board, &solution, boardN, &blockSize, k,level, &mistakes, &secounds);
                 clear_screen();
                 break;
 
@@ -134,7 +135,7 @@ void playSudoku(int *boardN, int *k,int *level)
         clear_and_print("\nCongratulations! You've solved the Sudoku!");
         printBoard(board, blockSize, *boardN);
 
-        printStatistics(secounds, mistakes);
+        printStatistics(secounds, mistakes,hints);
         printf("\nPress any key to exit...");
         scanf("%*s"); // Wait for user input
     }

@@ -115,20 +115,27 @@ void chooseBoardN(int *boardN, int *k, int *level) {
 
 
 void instruction() {
-
     int choice;
     do {
         clear_screen();
-        printf("Intsruction:\n");
-
+        printf("=== Instructions ===\n\n");
+        printf("Welcome to Sudoku!\n");
+        printf("The goal of the game is to fill the grid so that:\n");
+        printf("- Each row contains numbers from 1 to n (grid size).\n");
+        printf("- Each column contains numbers from 1 to n.\n");
+        printf("- Each smaller sub-grid contains numbers from 1 to n.\n\n");
+        printf("Game controls:\n");
+        printf("1. Enter row, column, and number to place a value. Format: A1 5\n");
+        printf("2. Enter \"exit\" to quit the game.\n");
+        printf("3. Enter \"hint\" to get a hint\n");
+        printf("3. Enter \"save\" to save the game from file\n");
+        printf("3. Enter \"load\" to load the game from file\n");
         printf("=======================\n");
-        printf("0. Exit\n");
-        printf("Place youre option: ");
+        printf("Press 0 to return to the main menu: ");
 
         if (scanf("%d", &choice) != 1) {
-            printf("Error: place 0 to Exit.\n");
+            printf("\nError: Invalid input. Please enter 0 to return.\n");
             while (getchar() != '\n');
-            continue;
         }
 
     } while (choice != 0);
