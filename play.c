@@ -61,7 +61,7 @@ void playSudoku(int *boardN, int *k,int *level)
     int row, col, num;
     bool gameWon = false;
     bool quit = false;
-    int hintRow = 0, hintCol = 0;
+
 
     // statistics
     int mistakes = 0;
@@ -92,6 +92,7 @@ void playSudoku(int *boardN, int *k,int *level)
                 break;
 
             case 2: // Hint
+                int hintRow = 0, hintCol = 0;
                 do {
                     hintRow = rand() % *boardN;
                     hintCol = rand() % *boardN;
@@ -102,11 +103,11 @@ void playSudoku(int *boardN, int *k,int *level)
                 clear_screen();
                 printf("Hint provided in %c%d: %d\n", 'A' + hintRow, hintCol + 1, board[hintRow][hintCol]);
                 break;
-            case 3://save
+            case 3://save game
                 saveGame(board, solution, *boardN, blockSize, *k, *level, mistakes, secounds);
                 quit = true;
                 break;
-            case 4:
+            case 4: //load game
                 loadGame(&board, &solution, boardN, &blockSize, k,level, &mistakes, &secounds);
                 clear_screen();
                 break;
