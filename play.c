@@ -1,11 +1,14 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
+#include <stdlib.h>
 
-#include "sudokuGenerator.c"
-#include "settings.c"
-#include "board.c"
-#include "game.c"
+#include "sudokuGenerator.h"
+#include "settings.h"
+#include "board.h"
+#include "game.h"
+#include "play.h"
 
 
 
@@ -91,14 +94,12 @@ void playSudoku(int *boardN, int *k,int *level)
 
     // statistics
     int mistakes = 0;
-    int secounds = 0;
+    int seconds = 0;
     int hints= 0;
-    timerStart(&secounds);
+    timerStart(&seconds);
 
     while (!quit && !gameWon) {
         printBoard(board, blockSize, *boardN);
-        printf("\n");
-        printBoard(solution, blockSize, *boardN);
         printf("Enter row (A-%c) column (1-%d), and number (1-%d):\n", 'A' + *boardN - 1, *boardN, *boardN);
         printf("Example: A1 5\n");
         printf("To remove value: A1 -r\n");
@@ -135,11 +136,11 @@ void playSudoku(int *boardN, int *k,int *level)
                 printf("Hint provided in %c%d: %d\n", 'A' + hintRow, hintCol + 1, board[hintRow][hintCol]);
                 break;
             case 3://save game
-                saveGame(board, solution, *boardN, blockSize, *k, *level, mistakes, secounds);
+                saveGame(board, solution, *boardN, blockSize, *k, *level, mistakes, hints, seconds);
                 quit = true;
                 break;
             case 4: //load game
-                loadGame(&board, &solution, boardN, &blockSize, k,level, &mistakes, &secounds);
+                loadGame(&board, &solution, boardN, &blockSize, k,level, &mistakes,&hints, &seconds);
                 clear_screen();
                 break;
             case 5: // Remove/delete value
@@ -184,12 +185,12 @@ void playSudoku(int *boardN, int *k,int *level)
 
     if (isBoardComplete(board, *boardN)) {
         gameWon = true;
-        secounds = timerStop(&secounds);
+        seconds = timerStop(&seconds);
 
         clear_and_print("\nCongratulations! You've solved the Sudoku!");
         printBoard(board, blockSize, *boardN);
 
-        printStatistics(secounds, mistakes,hints);
+        printStatistics(seconds, mistakes,hints);
         printf("\nPress any key to exit...");
         clear_input_buffer();
         getchar();
@@ -201,3 +202,4 @@ void playSudoku(int *boardN, int *k,int *level)
     freeBoard(solution,*boardN);
 
 }
+

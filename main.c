@@ -1,4 +1,7 @@
-#include "play.c"
+#include <stdio.h>
+#include "play.h"
+#include "settings.h"
+#include "globals.h"
 
 
 int boardN = 9;
@@ -22,7 +25,7 @@ int main() {
             while (getchar() != '\n');
             continue;
         }
-        while (getchar() != '\n');
+
 
         switch (choice) {
         case 1:
@@ -48,3 +51,4 @@ int main() {
 
     return 0;
 }
+

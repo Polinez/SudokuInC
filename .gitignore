@@ -2,3 +2,4 @@
 /cmake-build-debug
 SudokuPlay
 sudoku.sav
+.DS_Store
