@@ -43,7 +43,7 @@ This is a console-based Sudoku game implemented in C, featuring:
 
 ## ⚠️ Known Issues
 
-- The remove command allows deleting any cell, even prefilled ones. The game only enforces maintaining at least K values on the board.
+- The remove command allows deleting any cell, even prefilled ones. The game only enforces maintaining at least K values on the board. -> TODO
 - Boards (16x16) may not display perfectly on small terminal windows.
 
 ## 🧩 Implementation Details
