@@ -68,7 +68,6 @@ bool fillRemaining(int** grid, int i, int j, int blockSize, int boardN) {
 
 
 
-
 void removeNDigits(int** grid, int N, int boardN) {
     while (N > 0) {
         int cellId = rand() % (boardN * boardN);
@@ -93,12 +92,28 @@ void copyGrid(int** source, int** destination, int boardN) {
 
 
 // Generate a Sudoku grid with K empty cells
-void sudokuGenerator(int **grid, int **solution, int k, int blockSize, int boardN) {
-    fillDiagonal(grid, blockSize, boardN);
-    fillRemaining(grid, 0, 0, blockSize, boardN);
+void sudokuGenerator(int **grid, int **solution, int k, int blockSize, int boardN)
+{
+    bool isComplete = false;
+    do
+    {
+        // clear the grid
+        for (int i = 0; i < boardN; i++) {
+            for (int j = 0; j < boardN; j++) {
+                grid[i][j] = 0;
+            }
+        }
 
-    //copy the filled grid to solution
-    copyGrid(grid, solution, boardN);
+        //generate a sudoku grid using backtracking
+        fillDiagonal(grid, blockSize, boardN);
+        isComplete = fillRemaining(grid, 0, 0, blockSize, boardN);
 
-    removeNDigits(grid, boardN*boardN - k, boardN);
+
+        //copy the filled grid to solution if grid is correct
+        if (isComplete)
+        {
+            copyGrid(grid, solution, boardN);
+            removeNDigits(grid, boardN*boardN - k, boardN);
+        }
+    } while (!isComplete);
 }
