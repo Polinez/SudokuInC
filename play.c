@@ -16,6 +16,11 @@ void clear_and_print(const char* message) {
     }
 }
 
+void clear_input_buffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+
 
 int convertInput(char* str, int boardN, int* row, int* col, int* num) {
     for (char* p = str; *p; ++p) {
@@ -27,17 +32,37 @@ int convertInput(char* str, int boardN, int* row, int* col, int* num) {
     if (strcmp(str, "save") == 0) return 3; // save
     if (strcmp(str, "load") == 0) return 4; // load
 
+
     char rowChar;
+    char command[13];
+    int tempCol;
+
+    // Check for remove command format: "A1 -r"
+    if (sscanf(str, "%c%d %s", &rowChar, &tempCol, command) == 3) {
+        if (strcmp(command, "-r") == 0) {
+            rowChar = toupper(rowChar);
+            *row = rowChar - 'A'; // 'A' → 0, 'B' → 1 etc.
+            *col = tempCol - 1;
+
+            if (*row < 0 || *row >= boardN || *col < 0 || *col >= boardN) {
+                return -2; // Invalid row/column
+            }
+
+            return 5; // Remove command
+        }
+    }
+
+    // Check for number input format: "A1 5"
     if (sscanf(str, "%c%d %d", &rowChar, col, num) == 3) {
         rowChar = toupper(rowChar);
         *row = rowChar - 'A'; // 'A' → 0, 'B' → 1 etc.
+        *col -= 1;
 
         // Validate input
-        if (*row < 0 || *row >= boardN || *col < 1 || *col > boardN || *num < 1 || *num > boardN) {
-            return -1;
+        if (*row < 0 || *row >= boardN || *col < 0 || *col >= boardN || *num < 1 || *num > boardN) {
+            return -2; // Invalid row/column/number
         }
 
-        *col -= 1;
         return 1; // Valid input
     }
 
@@ -61,7 +86,8 @@ void playSudoku(int *boardN, int *k,int *level)
     int row, col, num;
     bool gameWon = false;
     bool quit = false;
-
+    int hintRow = 0, hintCol = 0;
+    int countNum = 0;
 
     // statistics
     int mistakes = 0;
@@ -71,8 +97,11 @@ void playSudoku(int *boardN, int *k,int *level)
 
     while (!quit && !gameWon) {
         printBoard(board, blockSize, *boardN);
+        printf("\n");
+        printBoard(solution, blockSize, *boardN);
         printf("Enter row (A-%c) column (1-%d), and number (1-%d):\n", 'A' + *boardN - 1, *boardN, *boardN);
         printf("Example: A1 5\n");
+        printf("To remove value: A1 -r\n");
         printf("Other commands: \"exit\", \"hint\", \"save\", \"load\" \n");
         printf("Your input: ");
 
@@ -82,6 +111,9 @@ void playSudoku(int *boardN, int *k,int *level)
         int answer = convertInput(input, *boardN, &row, &col, &num);
 
         switch (answer) {
+            case -2: // invalid row/column/number
+                clear_and_print("Invalid row/column/number.");
+                continue;
             case -1: // Invalid input
                 clear_and_print("Invalid input! Please try again.");
                 continue;
@@ -92,7 +124,6 @@ void playSudoku(int *boardN, int *k,int *level)
                 break;
 
             case 2: // Hint
-                int hintRow = 0, hintCol = 0;
                 do {
                     hintRow = rand() % *boardN;
                     hintCol = rand() % *boardN;
@@ -111,6 +142,28 @@ void playSudoku(int *boardN, int *k,int *level)
                 loadGame(&board, &solution, boardN, &blockSize, k,level, &mistakes, &secounds);
                 clear_screen();
                 break;
+            case 5: // Remove/delete value
+                countNum = 0;
+                if (solution[row][col] != 0 && board[row][col] != 0) {
+                    //count numbers on the board
+                    for (int i = 0; i < *boardN; i++) {
+                        for (int j = 0; j < *boardN; j++) {
+                            if (board[i][j] != 0 ) {
+                                countNum+=1;
+                            }
+                        }
+                    }
+
+                    if (countNum > *k) {
+                        board[row][col] = 0;
+                        clear_and_print("Value removed!");
+                    } else {
+                        clear_and_print("Cannot remove! To low number of numbers on the board.");
+                    }
+                } else {
+                    clear_and_print("Cell is already empty!");
+                }
+                break;
 
             case 1: // current input
                 if (board[row][col] != 0) {
@@ -122,7 +175,7 @@ void playSudoku(int *boardN, int *k,int *level)
                     board[row][col] = num;
                     clear_and_print("Correct!");
                 } else {
-                    clear_and_print("Incorrect! Try again.");
+                    clear_and_print("Incorrect guess! Try again.");
                     mistakes++;
                 }
                 break;
@@ -138,7 +191,8 @@ void playSudoku(int *boardN, int *k,int *level)
 
         printStatistics(secounds, mistakes,hints);
         printf("\nPress any key to exit...");
-        scanf("%*s"); // Wait for user input
+        clear_input_buffer();
+        getchar();
     }
 }
 

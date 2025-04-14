@@ -44,7 +44,7 @@ void chooseLevel(int *boardN, int *k, int *level) {
             while (getchar() != '\n');
             continue;
         }
-
+        while (getchar() != '\n');
 
         switch (choice) {
         case 1: // Easy
@@ -89,6 +89,8 @@ void chooseBoardN(int *boardN, int *k, int *level) {
             while (getchar() != '\n');
             continue;
         }
+        while (getchar() != '\n');
+
 
         *level = 1; // default level
         switch (choice) {
