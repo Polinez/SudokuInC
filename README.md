@@ -74,7 +74,7 @@ The game tracks:
 
 ## 🎉 Meme
 
-![Czeski meme](https://github.com/user-attachments/assets/70165901-2991-4608-995c-98963ea20ff8) ![C meme](https://github.com/user-attachments/assets/41adb2d9-afc9-4350-b786-e2c9ce84f3b8)
+![Czeski meme](https://github.com/user-attachments/assets/70165901-2991-4608-995c-98963ea20ff8) ![C meme](https://github.com/user-attachments/assets/41adb2d9-afc9-4350-b786-e2c9ce84f3b8)<img src="https://github.com/user-attachments/assets/2322316c-41f6-4f53-9865-f45adf33d378" width="350" height="250" />
 
 ---
 
