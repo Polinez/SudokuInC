@@ -11,6 +11,7 @@ This is a console-based Sudoku game implemented in C, featuring:
 - Game saving/loading functionality
 - Hints system
 - Game statistics tracking
+- Simulated Annealing solver 
 
 ## 🛠️ Installation & Usage
 
@@ -22,7 +23,7 @@ This is a console-based Sudoku game implemented in C, featuring:
 
 2. Compile the program:
    ```bash
-   gcc -o sudoku main.c play.c settings.c game.c board.c sudokuGenerator.c -lm
+   gcc -o sudoku main.c play.c settings.c game.c board.c sudokuGenerator.c solver.c -lm
    ```
 
 3. Run the game:
