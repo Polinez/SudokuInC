@@ -2,6 +2,7 @@
 #include "play.h"
 #include "settings.h"
 #include "globals.h"
+#include "solver.h"
 
 
 int boardN = 9;
@@ -17,6 +18,7 @@ int main() {
         printf("2. Choose board size\n");
         printf("3. Choose level\n");
         printf("4. Instruction\n");
+        printf("5. Solver Genetic Algorithm\n");
         printf("0. Exit\n");
         printf("Place your option: ");
 
@@ -40,6 +42,8 @@ int main() {
         case 4:
             instruction();
             break;
+        case 5:
+            FindSolutions(&boardN, &k, &level);
         case 0:
             clear_screen();
             printf("bye!\n");

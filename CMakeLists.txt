@@ -3,4 +3,16 @@ project(SudokuInC C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(SudokuInC main.c)
+set(SOURCE_FILES
+        main.c
+        play.c
+        settings.c
+        game.c
+        board.c
+        sudokuGenerator.c
+        solver.c
+)
+
+add_executable(SudokuInC ${SOURCE_FILES})
+
+target_link_libraries(SudokuInC m)
