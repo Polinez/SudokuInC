@@ -11,7 +11,8 @@ This is a console-based Sudoku game implemented in C, featuring:
 - Game saving/loading functionality
 - Hints system
 - Game statistics tracking
-- Simulated Annealing solver 
+- Simulated Annealing solver
+- Genetic Algorithm implemented
 
 ## 🛠️ Installation & Usage
 
@@ -23,7 +24,7 @@ This is a console-based Sudoku game implemented in C, featuring:
 
 2. Compile the program:
    ```bash
-   gcc -o sudoku main.c play.c settings.c game.c board.c sudokuGenerator.c solver.c GA.c -lm
+   gcc -o sudoku main.c play.c settings.c game.c board.c sudokuGenerator.c solver.c GA.c GAalghoritms.c -lm
    ```
 
 3. Run the game:
@@ -46,6 +47,8 @@ This is a console-based Sudoku game implemented in C, featuring:
 
 - The remove command allows deleting any cell, even prefilled ones. The game only enforces maintaining at least K values on the board. -> TODO
 - Boards (16x16) may not display perfectly on small terminal windows.
+- The algorithm could not generate the solution as an additional board but check the solution while entering it, which would help save memory in exchange for speed efficiency
+- In GA alghoritm, the fitness function could be better
 
 ## 🧩 Implementation Details
 
