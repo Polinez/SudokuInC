@@ -23,7 +23,7 @@ This is a console-based Sudoku game implemented in C, featuring:
 
 2. Compile the program:
    ```bash
-   gcc -o sudoku main.c play.c settings.c game.c board.c sudokuGenerator.c solver.c -lm
+   gcc -o sudoku main.c play.c settings.c game.c board.c sudokuGenerator.c solver.c GA.c -lm
    ```
 
 3. Run the game:
