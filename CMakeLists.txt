@@ -11,6 +11,8 @@ set(SOURCE_FILES
         board.c
         sudokuGenerator.c
         solver.c
+        GA.c
+        GAalghoritms.c
 )
 
 add_executable(SudokuInC ${SOURCE_FILES})

@@ -12,6 +12,8 @@
 
 
 void insertRandomValues(int **grid, int **frozenGrid, int blockSize, int boardN) {
+    // It is necessary to fill the grid first with frozen values
+
     // place num from 1 do 9 in every block
     for (int blockRow = 0; blockRow < blockSize; blockRow++) {
         for (int blockCol = 0; blockCol < blockSize; blockCol++) {

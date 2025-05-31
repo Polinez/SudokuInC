@@ -1,4 +1,6 @@
 #include <stdio.h>
+
+#include "hFiles/GA.h"
 #include "hFiles/play.h"
 #include "hFiles/settings.h"
 #include "hFiles/globals.h"
@@ -18,7 +20,8 @@ int main() {
         printf("2. Choose board size\n");
         printf("3. Choose level\n");
         printf("4. Instruction\n");
-        printf("5. Solver Genetic Algorithm\n");
+        printf("5. Solver Annealing Algorithm\n");
+        printf("6. Solver Genetic Algorithm\n");
         printf("0. Exit\n");
         printf("Place your option: ");
 
@@ -44,6 +47,10 @@ int main() {
             break;
         case 5:
             FindSolutions(&boardN, &k, &level);
+            break;
+        case 6:
+            Find_GA_Solution(&boardN, &k, &level);
+            break;
         case 0:
             clear_screen();
             printf("bye!\n");
