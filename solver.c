@@ -1,13 +1,13 @@
-#include "solver.h"
+#include "hFiles/solver.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <tgmath.h>
 
-#include "settings.h"
-#include "sudokuGenerator.h"
-#include "board.h"
-#include "game.h"
+#include "hFiles/settings.h"
+#include "hFiles/sudokuGenerator.h"
+#include "hFiles/board.h"
+#include "hFiles/game.h"
 
 
 

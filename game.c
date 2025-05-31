@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
-#include "game.h"
-#include "sudokuGenerator.h"
+#include "hFiles/game.h"
+#include "hFiles/sudokuGenerator.h"
 
 int** initializeGame(int **board,int **solution,int boardN, int k, int blockSize) {
 

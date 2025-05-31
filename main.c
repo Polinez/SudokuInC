@@ -1,8 +1,8 @@
 #include <stdio.h>
-#include "play.h"
-#include "settings.h"
-#include "globals.h"
-#include "solver.h"
+#include "hFiles/play.h"
+#include "hFiles/settings.h"
+#include "hFiles/globals.h"
+#include "hFiles/solver.h"
 
 
 int boardN = 9;

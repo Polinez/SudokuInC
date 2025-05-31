@@ -4,11 +4,12 @@
 #include <math.h>
 #include <stdlib.h>
 
-#include "sudokuGenerator.h"
-#include "settings.h"
-#include "board.h"
-#include "game.h"
-#include "play.h"
+#include "hFiles/sudokuGenerator.h"
+#include "hFiles/settings.h"
+#include "hFiles/board.h"
+#include "hFiles/game.h"
+#include "hFiles/play.h"
+#include "hFiles/GA.h"
 
 
 

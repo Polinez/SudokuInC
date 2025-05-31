@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "settings.h"
+#include "hFiles/settings.h"
 
 void clear_screen() {
     system("clear||cls");

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "board.h"
+#include "hFiles/board.h"
 
 void printSeparator(int blocksPerRow, int blockSize, int cell_width) {
     printf("   +");
